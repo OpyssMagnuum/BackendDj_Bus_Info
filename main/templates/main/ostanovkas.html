@@ -1,0 +1,34 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<div class="route-container">
+    <h1>Маршрут №{{ route.bus_num }}</h1>
+    <h2>{{ route.short_route_name }}</h2>
+
+    <div class="route-directions">
+        <!-- Прямое направление -->
+        <div class="direction">
+            <h3>Прямое направление</h3>
+            <ul class="stops-list">
+                {% for stop in route.long_route.all %}
+                    <li class="stop-item">
+                        Ост. №{{ stop.bs_num }}: <strong>{{ stop.bus_stop_name }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Обратное направление -->
+        <div class="direction">
+            <h3>Обратное направление</h3>
+            <ul class="stops-list">
+                {% for stop in route.long_route_reverse.all %}
+                    <li class="stop-item">
+                        Ост. №{{ stop.bs_num }}: <strong>{{ stop.bus_stop_name }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

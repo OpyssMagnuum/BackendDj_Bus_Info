@@ -1,0 +1,67 @@
+<!-- templates/ostanovkas.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        {% if reverse == 0 %}
+            Ввод остановок для маршрута {{ route_number }}
+        {% else %}
+            Ввод остановок для маршрута {{ route_number }} в обратную сторону
+        {% endif %}
+    </title>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .stop-input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>
+        {% if reverse == 0 %}
+            Ввод остановок для маршрута {{ route_number }}
+        {% else %}
+            Ввод остановок для маршрута {{ route_number }} в обратную сторону
+        {% endif %}
+        </h1>
+
+        <form method="post" action="{% url 'save_route_stops' %}">
+            {% csrf_token %}
+            <input type="hidden" name="route_name" value="{{ route_number }}">
+            <input type="hidden" name="reverse" value="{{ reverse }}">
+
+            {% for i in stop_count_range %}
+                <div>
+                    <input type="text"
+                           name="stop_name_{{ forloop.counter }}"
+                           placeholder="Название остановки {{ forloop.counter }}"
+                           class="stop-input" required>
+                </div>
+            {% endfor %}
+
+            <div>
+                <button type="submit" class="submit-btn">Сохранить остановки</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
