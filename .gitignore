@@ -1,1 +1,3 @@
 stuff_to_ignore.py
+__pychache__
+.idea
