@@ -32,4 +32,6 @@ urlpatterns = [
     # добавьте также путь для обработки формы
     path('save-route-stops/', views.save_route_stops, name='save_route_stops'),
     path('route/<str:route_id>/', views.route_detail, name='route_detail'),
+    path('find_routes/', views.route_presort, name='input_form'),
+    path('found_results/<str:stop1>/<str:stop2>/', views.route_postsort, name='results'),
 ] + r.urls

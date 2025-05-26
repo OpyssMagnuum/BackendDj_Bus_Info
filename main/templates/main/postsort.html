@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты поиска маршрутов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .route {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .stops-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .stop-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .stop-item:last-child {
+            border-bottom: none;
+        }
+        .distance {
+            color: #666;
+            font-style: italic;
+        }
+        .no-results {
+            color: #d9534f;
+            font-size: 1.2em;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #337ab7;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Маршруты от "{{ stop1 }}" до "{{ stop2 }}"</h1>
+
+    {% if routes %}
+        {% for route in routes %}
+            <div class="route">
+                <div class="route-header">
+                    {% if route.direction == 'forward' %}
+                    <span>Маршрут №{{ route.bus_num }}: {{ route.short_route_name }}</span>
+                    {% else %}
+                    <span>Маршрут обр. №{{ route.bus_num }}: {{ route.short_route_name }}</span>
+                    {% endif %}
+                    <span class="distance">{{ route.stops_count }} остановок</span>
+                </div>
+                <ul class="stops-list">
+                    {% for stop in route.stops %}
+                        <li class="stop-item {% if stop.bus_stop_name == stop1 or stop.bus_stop_name == stop2 %}highlight{% endif %}">
+                            {% if stop.bs_num_reverse %}
+                                {{ stop.route_name }} - обр. ОСТ №{{ stop.bs_num }} - {{ stop.bus_stop_name }}
+                            {% else %}
+                                {{ stop.route_name }} - ОСТ №{{ stop.bs_num }} - {{ stop.bus_stop_name }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-results">Маршруты между указанными остановками не найдены.</p>
+    {% endif %}
+
+    <a href="{% url 'input_form' %}" class="back-link">← Назад к поиску</a>
+</body>
+</html>
